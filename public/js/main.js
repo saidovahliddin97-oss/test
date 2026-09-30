@@ -235,21 +235,32 @@ function renderWorld(list, persistent) {
   if (!persistent) $('world-board').insertAdjacentHTML('beforeend', '<li class="muted">Хранилище не подключено</li>');
 }
 
+// На статическом хостинге (GitHub Pages) API нет — тогда блок рейтинга просто скрыт.
+let apiAvailable = null;
+
 async function submitScore(name, score) {
+  if (apiAvailable === false) return;
   $('world-board').innerHTML = '<li class="muted">Загрузка…</li>';
   try {
     const res = score > 0
-      ? await fetch('/api/scores', {
+      ? await fetch('api/scores', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, score }),
       })
-      : await fetch('/api/scores');
-    if (!res.ok) throw new Error(res.status);
+      : await fetch('api/scores');
+    if (!res.ok || !(res.headers.get('content-type') || '').includes('json')) throw new Error(res.status);
     const data = await res.json();
+    apiAvailable = true;
+    $('world-top').hidden = false;
     renderWorld(data.scores, data.persistent);
   } catch {
-    $('world-board').innerHTML = '<li class="muted">Сервер недоступен</li>';
+    if (apiAvailable) {
+      $('world-board').innerHTML = '<li class="muted">Сервер недоступен</li>';
+    } else {
+      apiAvailable = false;
+      $('world-top').hidden = true;
+    }
   }
 }
 

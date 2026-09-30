@@ -1,0 +1,36 @@
+name: Deploy to GitHub Pages
+
+# Каждый пуш в main публикует папку public/ в ветку gh-pages,
+# откуда GitHub Pages раздаёт игру: https://saidovahliddin97-oss.github.io/test/
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Publish public/ to gh-pages
+        env:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cd public
+          touch .nojekyll
+          git init -q -b gh-pages
+          git add -A
+          git -c user.name="github-actions[bot]" \
+              -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+              commit -qm "Deploy ${GITHUB_SHA::7}"
+          git push -f "https://x-access-token:${TOKEN}@github.com/${GITHUB_REPOSITORY}.git" gh-pages
+          echo "### 🐍 Игра: https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}/" >> "$GITHUB_STEP_SUMMARY"
