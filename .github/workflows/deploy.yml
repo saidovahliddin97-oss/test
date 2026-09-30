@@ -1,7 +1,7 @@
 name: Deploy to Vercel
 
 # Автодеплой: каждый пуш в main публикует игру на Vercel (production).
-# Нужен один секрет репозитория: VERCEL_TOKEN
+# Нужен один секрет репозитория: VERCEL_TOKEN (или VERCEL)
 # (GitHub → Settings → Secrets and variables → Actions → New repository secret).
 
 on:
@@ -17,7 +17,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     env:
-      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN || secrets.VERCEL }}
       VERCEL_PROJECT: snaky-io
     steps:
       - uses: actions/checkout@v4
