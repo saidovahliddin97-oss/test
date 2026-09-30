@@ -36,18 +36,23 @@ api/
 vercel.json          конфигурация Vercel
 ```
 
-## Деплой на Vercel
+## Деплой на Vercel (автоматически)
 
-1. Зайдите на https://vercel.com/new и импортируйте этот GitHub-репозиторий.
-2. Framework Preset: **Other**, остальные настройки оставьте по умолчанию → **Deploy**.
-3. (Рекомендуется) Подключите хранилище для рекордов:
-   **Project → Storage → Create Database → Upstash (Redis)** → привяжите к проекту.
-   Vercel сам добавит переменные `KV_REST_API_URL` и `KV_REST_API_TOKEN`.
-   Затем сделайте **Redeploy**.
+Каждый пуш в ветку `main` сам публикует игру на Vercel через GitHub Actions
+(`.github/workflows/deploy.yml`). Настроить нужно один раз:
 
-Без хранилища игра тоже работает, но рекорды хранятся в памяти функции и сбрасываются.
+1. Создайте токен: https://vercel.com/account/tokens → **Create Token**.
+2. В GitHub: **Settings → Secrets and variables → Actions → New repository secret**,
+   имя `VERCEL_TOKEN`, значение — токен.
+3. **Actions → Deploy to Vercel → Run workflow** (или просто сделайте пуш в `main`).
+   Проект `snaky-io` создастся в Vercel автоматически, ссылка на игру будет в итогах запуска.
 
-После этого каждый `git push` в репозиторий автоматически деплоится.
+Хранилище рекордов (рекомендуется): в Vercel откройте проект `snaky-io` →
+**Storage → Create Database → Upstash (Redis)** → привяжите к проекту и сделайте Redeploy.
+Без хранилища рекорды хранятся в памяти функции и сбрасываются.
+
+> Альтернатива без токена: импортируйте репозиторий на https://vercel.com/new —
+> тогда Vercel сам деплоит каждый пуш. Используйте что-то одно, чтобы не было двойных деплоев.
 
 ## Локальный запуск
 
