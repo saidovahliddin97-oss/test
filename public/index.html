@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <title>Змейка</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="layout">
+    <section class="game">
+      <header class="hud">
+        <h1>🐍 Змейка</h1>
+        <div class="stats">
+          <span>Счёт: <b id="score">0</b></span>
+          <span>Рекорд: <b id="best">0</b></span>
+        </div>
+      </header>
+
+      <div class="board">
+        <canvas id="canvas" width="400" height="400"></canvas>
+        <div id="overlay" class="overlay">
+          <p id="overlay-title" class="overlay-title">Змейка</p>
+          <p id="overlay-text">Стрелки / WASD — управление<br>Пробел — пауза<br>На телефоне — свайпы</p>
+          <form id="save-form" class="save-form" hidden>
+            <input id="name" maxlength="16" placeholder="Ваше имя" autocomplete="off" required>
+            <button type="submit">Сохранить</button>
+          </form>
+          <button id="start" class="primary">Играть</button>
+        </div>
+      </div>
+
+      <div class="dpad" aria-label="Управление">
+        <button data-dir="up">▲</button>
+        <button data-dir="left">◀</button>
+        <button data-dir="down">▼</button>
+        <button data-dir="right">▶</button>
+      </div>
+    </section>
+
+    <aside class="leaderboard">
+      <h2>Таблица рекордов</h2>
+      <ol id="scores"><li class="muted">Загрузка…</li></ol>
+      <p id="storage-note" class="muted small"></p>
+    </aside>
+  </main>
+
+  <script src="game.js"></script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+{
+  "name": "snake-game",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Браузерная игра «Змейка» с таблицей рекордов на Vercel",
+  "scripts": {
+    "dev": "vercel dev"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
