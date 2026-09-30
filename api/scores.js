@@ -5,7 +5,7 @@
 
 const KEY = 'snake:scores';
 const TOP = 10;
-const MAX_SCORE = 20 * 20 * 10;
+const MAX_SCORE = 1_000_000;
 
 const REDIS_URL = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
 const REDIS_TOKEN = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
@@ -58,7 +58,7 @@ export default async function handler(req, res) {
       const score = Number(body.score);
 
       if (!name) return res.status(400).json({ error: 'Имя обязательно' });
-      if (!Number.isInteger(score) || score <= 0 || score > MAX_SCORE || score % 10 !== 0) {
+      if (!Number.isInteger(score) || score <= 0 || score > MAX_SCORE) {
         return res.status(400).json({ error: 'Некорректный счёт' });
       }
 
